@@ -126,6 +126,15 @@ const Mycar = () => {
     fetchCars();
   };
 
+  const onCarUpdated = (updatedCar) => {
+    setCars((prevCars) =>
+      prevCars.map((car) =>
+        car._id === updatedCar._id ? { ...car, ...updatedCar } : car
+      )
+    );
+    closeModal();
+  };
+
   return (
     <div className="max-w-7xl mx-auto bg-white px-4 py-8 mt-10 mb-10">
       <Helmet>
@@ -266,7 +275,11 @@ const Mycar = () => {
           </div>
 
           {showModal && (
-            <AddcarsModal onClose={closeModal} carData={carToUpdate} />
+            <AddcarsModal
+              onClose={closeModal}
+              carData={carToUpdate}
+              onCarUpdated={onCarUpdated}
+            />
           )}
         </>
       )}

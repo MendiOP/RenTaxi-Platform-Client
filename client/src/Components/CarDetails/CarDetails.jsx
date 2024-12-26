@@ -9,7 +9,7 @@ const CarDetails = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    fetch(`https://car-rental-server-one.vercel.app/car/${id}`)
+    fetch(`http://localhost:5000/car/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setCar(data);
@@ -49,7 +49,7 @@ const CarDetails = () => {
 
   const handleConfirmBooking = () => {
     try {
-      fetch(`https://car-rental-server-one.vercel.app/book/${car._id}`, {
+      fetch(`http://localhost:5000/book/${car._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
