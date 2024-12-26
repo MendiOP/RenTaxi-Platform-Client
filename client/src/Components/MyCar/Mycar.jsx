@@ -22,7 +22,7 @@ const Mycar = () => {
     setError(null); // Reset previous errors
     try {
       const response = await fetch(
-        `http://localhost:5000/myCar?email=${user.email}`
+        `https://car-rental-server-one.vercel.app/myCar?email=${user.email}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch cars.");
@@ -54,7 +54,7 @@ const Mycar = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/deleteCar/${id}`, {
+        fetch(`https://car-rental-server-one.vercel.app/deleteCar/${id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())

@@ -38,7 +38,9 @@ const Mybookings = () => {
   useEffect(() => {
     if (user?.email) {
       setIsLoading(true);
-      fetch(`http://localhost:5000/myBookings?email=${user.email}`)
+      fetch(
+        `https://car-rental-server-one.vercel.app/myBookings?email=${user.email}`
+      )
         .then((res) => res.json())
         .then((data) => {
           setCars(data);
@@ -75,12 +77,15 @@ const Mybookings = () => {
   const confirmCancel = () => {
     if (!selectedCarIdForCancel) return;
 
-    fetch(`http://localhost:5000/cancelBooking/${selectedCarIdForCancel}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `https://car-rental-server-one.vercel.app/cancelBooking/${selectedCarIdForCancel}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.deletedCount > 0) {
@@ -136,13 +141,16 @@ const Mybookings = () => {
 
     console.log("Updated booking:", updatedBooking);
 
-    fetch(`http://localhost:5000/updateBooking/${selectedCarIdForModify}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedBooking),
-    })
+    fetch(
+      `https://car-rental-server-one.vercel.app/updateBooking/${selectedCarIdForModify}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedBooking),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.modifiedCount > 0) {

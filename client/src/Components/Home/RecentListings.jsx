@@ -54,7 +54,7 @@ const RecentListings = () => {
 
   const [cars, setCars] = useState([]);
 
-  fetch("http://localhost:5000/availableCars")
+  fetch("https://car-rental-server-one.vercel.app/availableCars")
     .then((res) => res.json())
     .then((data) => setCars(data));
 
