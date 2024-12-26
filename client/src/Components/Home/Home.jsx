@@ -1,9 +1,17 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+// import React from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
+import Banner from "./Banner";
+import RecentListings from "./RecentListings";
+import SpecialOffers from "./SpecialOffers";
+import WhyChooseUs from "./WhyChooseUs";
 
 const Home = () => {
+  const location = useLocation();
+
+  let isHomePath = location.pathname === "/";
+
   return (
     <div>
       <header>
@@ -11,6 +19,15 @@ const Home = () => {
       </header>
 
       <main>
+        {isHomePath && (
+          <>
+            <Banner></Banner>
+            <WhyChooseUs></WhyChooseUs>
+            <RecentListings></RecentListings>
+            <SpecialOffers></SpecialOffers>
+          </>
+        )}
+
         <Outlet></Outlet>
       </main>
 

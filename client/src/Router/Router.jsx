@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../Components/Home/Home";
+import PrivateRouter from "../Components/PrivateRoute/PrivateRoute";
 import Addcars from "./../Components/AddCars/Addcars";
 import Availablecars from "./../Components/AvailableCars/Availablecars";
 import ErrorPage from "./../Components/Error/ErrorPage";
@@ -18,15 +19,27 @@ const Router = createBrowserRouter([
       },
       {
         path: "/addcar",
-        element: <Addcars></Addcars>,
+        element: (
+          <PrivateRouter>
+            <Addcars></Addcars>
+          </PrivateRouter>
+        ),
       },
       {
         path: "/mycar",
-        element: <MyCar></MyCar>,
+        element: (
+          <PrivateRouter>
+            <MyCar></MyCar>
+          </PrivateRouter>
+        ),
       },
       {
         path: "/mybookings",
-        element: <Mybookings></Mybookings>,
+        element: (
+          <PrivateRouter>
+            <Mybookings></Mybookings>
+          </PrivateRouter>
+        ),
       },
       {
         path: "/login",
