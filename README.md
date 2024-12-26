@@ -109,7 +109,7 @@ To set up the project locally, follow these steps:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/car-booking-app.git
+git clone https://github.com/your-username/car-booking-app.git(link will be given in future)
 cd car-booking-app
 ```
 
