@@ -73,8 +73,6 @@ The project utilizes a variety of NPM packages to enhance functionality, streaml
   - A utility-first CSS framework for rapid UI development.
 - **[React Router](https://reactrouter.com/)**
   - Declarative routing for React applications.
-- **[Axios](https://axios-http.com/)**
-  - Promise-based HTTP client for making API requests.
 - **[React Toastify](https://fkhadra.github.io/react-toastify/)**
   - For displaying notifications and alerts in the application.
 - **[React Icons](https://react-icons.github.io/react-icons/)**
