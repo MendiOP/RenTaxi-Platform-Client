@@ -12,6 +12,9 @@ const AvailableCars = () => {
       .then((res) => res.json())
       .then((data) => {
         setCars(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching cars:", error);
       });
   }, []);
 
@@ -90,7 +93,7 @@ const AvailableCars = () => {
             >
               <img
                 src={car.image}
-                alt="Car"
+                alt={car.model}
                 className="object-cover w-full h-full"
               />
             </figure>
@@ -105,19 +108,36 @@ const AvailableCars = () => {
               </p>
               <p>
                 <span className="font-bold">Availability: </span>
-                <span className="badge badge-success">{car.availability}</span>
+                <span
+                  className={`badge ${
+                    car.bookingCount === 0
+                      ? "badge-success"
+                      : "badge-error text-lg"
+                  }`}
+                >
+                  {car.bookingCount === 0 ? "Available" : "Booked"}
+                </span>
               </p>
               <p>
                 <span className="font-bold">Features: </span>
                 <span>{car.features}</span>
               </p>
               <div className="card-actions justify-center">
-                <Link
-                  to={`/carDetails/${car._id}`}
-                  className="btn btn-wide btn-warning text-xl"
-                >
-                  Book Now
-                </Link>
+                {car.bookingCount === 0 ? (
+                  <Link
+                    to={`/carDetails/${car._id}`}
+                    className="btn btn-wide btn-warning text-xl"
+                  >
+                    Book Now
+                  </Link>
+                ) : (
+                  <button
+                    className="btn btn-wide btn-disabled text-xl cursor-not-allowed"
+                    disabled
+                  >
+                    Book Now
+                  </button>
+                )}
               </div>
             </div>
           </div>

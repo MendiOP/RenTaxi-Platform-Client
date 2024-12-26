@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const CarDetails = () => {
-  const { id } = useParams(); // expects route like "/car-details/:id"
+  const { id } = useParams();
   const [car, setCar] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // Fetch car details by ID
     fetch(`http://localhost:5000/car/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -48,13 +47,22 @@ const CarDetails = () => {
   };
 
   const handleConfirmBooking = () => {
-    // Handle booking logic here (form submission, redirect, etc.)
     try {
       fetch(`http://localhost:5000/book/${car._id}`, {
-        method: "PATCH",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          carCollectionId: car._id,
+          image: car.image,
+          model: car.model,
+          rent: car.rent,
+          availability: car.availability,
+          userName: car.userName,
+          userEmail: car.userEmail,
+          bookingDate: car.bookingDate,
+        }),
       })
         .then((res) => res.json())
         .then((data) => {
@@ -65,6 +73,7 @@ const CarDetails = () => {
     }
 
     console.log("Booking confirmed for car:", car._id);
+
     setShowModal(false);
   };
 
@@ -74,7 +83,6 @@ const CarDetails = () => {
 
       {/* Main content layout */}
       <div className="flex flex-col md:flex-row md:gap-8">
-        {/* Image (if multiple images, you could build a carousel or a grid) */}
         <div className="mb-4 md:mb-0 md:w-1/2">
           <img
             src={car.image}
