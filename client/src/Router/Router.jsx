@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
+import Addcars from "../Components/AddCars/Addcars";
+import CarDetails from "../Components/Cardetails/Cardetails";
 import Home from "../Components/Home/Home";
 import PrivateRouter from "../Components/PrivateRoute/PrivateRoute";
-import Addcars from "./../Components/AddCars/Addcars";
 import Availablecars from "./../Components/AvailableCars/Availablecars";
 import ErrorPage from "./../Components/Error/ErrorPage";
 import Login from "./../Components/Login/Login";
@@ -38,6 +39,14 @@ const Router = createBrowserRouter([
         element: (
           <PrivateRouter>
             <Mybookings></Mybookings>
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "/carDetails/:id",
+        element: (
+          <PrivateRouter>
+            <CarDetails></CarDetails>
           </PrivateRouter>
         ),
       },
