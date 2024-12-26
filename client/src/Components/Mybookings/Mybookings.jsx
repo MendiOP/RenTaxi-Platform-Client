@@ -1,6 +1,18 @@
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Tooltip,
+} from "chart.js";
 import React, { useContext, useEffect, useState } from "react";
-import { FaCalendarAlt, FaTrash } from "react-icons/fa";
+import { Bar } from "react-chartjs-2";
+import { FaCalendarAlt, FaRegSadTear, FaTrash } from "react-icons/fa"; // Added icon for no data
 import { AuthContext } from "../../AuthContext/AuthContext";
+
+// Register Chart.js components
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const Mybookings = () => {
   const [cars, setCars] = useState([]);
@@ -146,172 +158,257 @@ const Mybookings = () => {
       });
   };
 
+  // Prepare data for Chart.js
+  const prepareChartData = () => {
+    // Extract rental prices from cars
+    const rentalPrices = cars.map((car) => car.rent);
+
+    // Define price ranges (you can adjust these as needed)
+    const priceRanges = [
+      { label: "$0 - $500", min: 0, max: 500 },
+      { label: "$501 - $1000", min: 501, max: 1000 },
+      { label: "$1001 - $1500", min: 1001, max: 1500 },
+      { label: "$1501 - $2000", min: 1501, max: 2000 },
+      { label: "$2001+", min: 2001, max: Infinity },
+    ];
+
+    // Count bookings in each price range
+    const counts = priceRanges.map((range) => {
+      return rentalPrices.filter(
+        (price) => price >= range.min && price <= range.max
+      ).length;
+    });
+
+    return {
+      labels: priceRanges.map((range) => range.label),
+      datasets: [
+        {
+          label: "Number of Bookings",
+          data: counts,
+          backgroundColor: "rgba(255, 99, 132, 0.6)",
+          borderColor: "rgba(255, 99, 132, 1)",
+          borderWidth: 1,
+        },
+      ],
+    };
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      tooltip: {
+        enabled: true,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        precision: 0,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+  };
+
   return (
-    <div className="p-4">
-      <div className="overflow-x-auto">
-        <table className="min-w-full border border-gray-200 text-center">
-          <thead className="bg-red-500 text-white text-lg">
-            <tr>
-              <th className="py-3 px-2 sm:px-4">Car Model</th>
-              <th className="py-3 px-2 sm:px-4">Total Price</th>
-              <th className="py-3 px-2 sm:px-4">Status</th>
-              <th className="py-3 px-2 sm:px-4">Booking Dates</th>
-              <th className="py-3 px-2 sm:px-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white text-gray-700">
-            {cars.map((car) => {
-              // Extract booking dates
-              let startDate = "";
-              let endDate = "";
-              if (car.bookingDate) {
-                const dates = car.bookingDate.split(" to ");
-                startDate = dates[0] || "";
-                endDate = dates[1] || "";
-              }
+    <div className="p-4 flex justify-center">
+      <div className="w-full sm:w-11/12 md:w-7/12 lg:w-7/12 mx-auto">
+        {cars.length === 0 ? (
+          <div className="flex flex-col items-center justify-center mt-20">
+            <FaRegSadTear className="text-6xl text-gray-400 mb-4" />
+            <p className="text-xl text-gray-600">You have no bookings yet.</p>
+          </div>
+        ) : (
+          <>
+            {/* Chart Section */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold mb-4 text-center">
+                Bookings by Daily Rental Price
+              </h2>
+              <div className="w-full h-64 md:h-96">
+                <Bar data={prepareChartData()} options={chartOptions} />
+              </div>
+            </div>
 
-              // Calculate total price
-              const days = calculateDays(startDate, endDate);
-              const totalPrice = days * car.rent;
+            {/* Bookings Table */}
+            <div className="overflow-x-auto">
+              <table className="min-w-full border border-gray-200 text-center">
+                <thead className="bg-red-500 text-white text-lg">
+                  <tr>
+                    <th className="py-3 px-2 sm:px-4">Car Model</th>
+                    <th className="py-3 px-2 sm:px-4">Total Price</th>
+                    <th className="py-3 px-2 sm:px-4">Status</th>
+                    <th className="py-3 px-2 sm:px-4">Booking Dates</th>
+                    <th className="py-3 px-2 sm:px-4">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white text-gray-700">
+                  {cars.map((car) => {
+                    // Extract booking dates
+                    let startDate = "";
+                    let endDate = "";
+                    if (car.bookingDate) {
+                      const dates = car.bookingDate.split(" to ");
+                      startDate = dates[0] || "";
+                      endDate = dates[1] || "";
+                    }
 
-              return (
-                <tr
-                  key={car._id}
-                  className="hover:bg-yellow-50 transition-colors"
+                    // Calculate total price
+                    const days = calculateDays(startDate, endDate);
+                    const totalPrice = days * car.rent;
+
+                    return (
+                      <tr
+                        key={car._id}
+                        className="hover:bg-yellow-50 transition-colors"
+                      >
+                        <td className="border border-gray-200 py-3 px-2 sm:px-4">
+                          <div className="flex flex-col sm:flex-row items-center gap-4">
+                            <div className="avatar">
+                              <div className="mask mask-squircle h-16 w-16">
+                                <img
+                                  src={car.image}
+                                  alt="Car"
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <div className="font-semibold text-base md:text-lg text-red-600">
+                                {car.model}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="border border-gray-200 py-3 px-2 sm:px-4 font-medium">
+                          <span className="text-red-500">${totalPrice}</span>
+                        </td>
+
+                        <td className="border border-gray-200 py-3 px-2 sm:px-4">
+                          <span
+                            className={`badge ${
+                              car.availability === "available"
+                                ? "badge-success"
+                                : "badge-warning"
+                            }`}
+                          >
+                            {car.availability}
+                          </span>
+                        </td>
+                        <td className="border border-gray-200 py-3 px-2 sm:px-4">
+                          <time className="text-yellow-600 font-medium">
+                            {startDate && endDate
+                              ? `${startDate} to ${endDate}`
+                              : "N/A"}
+                          </time>
+                        </td>
+                        <td className="border border-gray-200 py-3 px-2 sm:px-4">
+                          <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                            {/* Cancel Button */}
+                            <button
+                              onClick={() => openCancelModal(car._id)}
+                              className="btn btn-error btn-sm sm:btn-md flex items-center justify-center"
+                            >
+                              <FaTrash className="mr-1 sm:mr-2" />
+                              <span className="hidden sm:inline">Cancel</span>
+                            </button>
+                            {/* Modify Date Button */}
+                            <button
+                              onClick={() => openModifyModal(car._id)}
+                              className="btn btn-info btn-sm sm:btn-md flex items-center justify-center"
+                            >
+                              <FaCalendarAlt className="mr-1 sm:mr-2" />
+                              <span className="hidden sm:inline">
+                                Modify Date
+                              </span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+
+        {/* Confirmation Modal for Cancellation */}
+        {isCancelModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md mx-auto">
+              <h2 className="text-xl font-semibold mb-4">
+                Confirm Cancellation
+              </h2>
+              <p className="mb-6">
+                Are you sure you want to cancel this booking?
+              </p>
+              <div className="flex flex-col sm:flex-row justify-end gap-4">
+                <button
+                  onClick={confirmCancel}
+                  className="btn btn-error w-full sm:w-auto"
                 >
-                  <td className="border border-gray-200 py-3 px-2 sm:px-4">
-                    <div className="flex flex-col sm:flex-row items-center gap-4">
-                      <div className="avatar">
-                        <div className="mask mask-squircle h-16 w-16">
-                          <img
-                            src={car.image}
-                            alt="Car"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-base md:text-lg text-red-600">
-                          {car.model}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="border border-gray-200 py-3 px-2 sm:px-4 font-medium">
-                    <span className="text-red-500">${totalPrice}</span>
-                  </td>
+                  Yes
+                </button>
+                <button
+                  onClick={closeCancelModal}
+                  className="btn btn-secondary w-full sm:w-auto"
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
-                  <td className="border border-gray-200 py-3 px-2 sm:px-4">
-                    <span
-                      className={`badge ${
-                        car.availability === "available"
-                          ? "badge-success"
-                          : "badge-warning"
-                      }`}
-                    >
-                      {car.availability}
-                    </span>
-                  </td>
-                  <td className="border border-gray-200 py-3 px-2 sm:px-4">
-                    <time className="text-yellow-600 font-medium">
-                      {startDate && endDate
-                        ? `${startDate} to ${endDate}`
-                        : "N/A"}
-                    </time>
-                  </td>
-                  <td className="border border-gray-200 py-3 px-2 sm:px-4">
-                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                      {/* Cancel Button */}
-                      <button
-                        onClick={() => openCancelModal(car._id)}
-                        className="btn btn-error btn-sm sm:btn-md flex items-center justify-center"
-                      >
-                        <FaTrash className="mr-1 sm:mr-2" />
-                        <span className="hidden sm:inline">Cancel</span>
-                      </button>
-                      {/* Modify Date Button */}
-                      <button
-                        onClick={() => openModifyModal(car._id)}
-                        className="btn btn-info btn-sm sm:btn-md flex items-center justify-center"
-                      >
-                        <FaCalendarAlt className="mr-1 sm:mr-2" />
-                        <span className="hidden sm:inline">Modify Date</span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        {/* Modification Modal */}
+        {isModifyModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md mx-auto">
+              <h2 className="text-xl font-semibold mb-4">
+                Modify Booking Dates
+              </h2>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2">Start Date:</label>
+                <input
+                  type="date"
+                  value={newStartDate}
+                  onChange={(e) => setNewStartDate(e.target.value)}
+                  className="w-full px-3 py-2 border rounded"
+                />
+              </div>
+              <div className="mb-6">
+                <label className="block text-gray-700 mb-2">End Date:</label>
+                <input
+                  type="date"
+                  value={newEndDate}
+                  onChange={(e) => setNewEndDate(e.target.value)}
+                  className="w-full px-3 py-2 border rounded"
+                />
+              </div>
+              <div className="flex flex-col sm:flex-row justify-end gap-4">
+                <button
+                  onClick={confirmModify}
+                  className="btn btn-primary w-full sm:w-auto"
+                >
+                  Confirm
+                </button>
+                <button
+                  onClick={closeModifyModal}
+                  className="btn btn-secondary w-full sm:w-auto"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-
-      {/* Confirmation Modal for Cancellation */}
-      {isCancelModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Confirm Cancellation</h2>
-            <p className="mb-6">
-              Are you sure you want to cancel this booking?
-            </p>
-            <div className="flex flex-col sm:flex-row justify-end gap-4">
-              <button
-                onClick={confirmCancel}
-                className="btn btn-error w-full sm:w-auto"
-              >
-                Yes
-              </button>
-              <button
-                onClick={closeCancelModal}
-                className="btn btn-secondary w-full sm:w-auto"
-              >
-                No
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modification Modal */}
-      {isModifyModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Modify Booking Dates</h2>
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2">Start Date:</label>
-              <input
-                type="date"
-                value={newStartDate}
-                onChange={(e) => setNewStartDate(e.target.value)}
-                className="w-full px-3 py-2 border rounded"
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 mb-2">End Date:</label>
-              <input
-                type="date"
-                value={newEndDate}
-                onChange={(e) => setNewEndDate(e.target.value)}
-                className="w-full px-3 py-2 border rounded"
-              />
-            </div>
-            <div className="flex flex-col sm:flex-row justify-end gap-4">
-              <button
-                onClick={confirmModify}
-                className="btn btn-primary w-full sm:w-auto"
-              >
-                Confirm
-              </button>
-              <button
-                onClick={closeModifyModal}
-                className="btn btn-secondary w-full sm:w-auto"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

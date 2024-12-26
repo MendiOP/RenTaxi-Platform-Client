@@ -1,56 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 
 const RecentListings = () => {
-  const cars = [
-    {
-      id: 1,
-      image: "https://via.placeholder.com/150",
-      model: "Toyota Camry 2023",
-      price: "$45/day",
-      availability: "Available",
-      datePosted: "Added 2 days ago",
-    },
-    {
-      id: 2,
-      image: "https://via.placeholder.com/150",
-      model: "Honda Accord 2022",
-      price: "$50/day",
-      availability: "Unavailable",
-      datePosted: "Added 5 days ago",
-    },
-    {
-      id: 3,
-      image: "https://via.placeholder.com/150",
-      model: "Ford Mustang 2021",
-      price: "$70/day",
-      availability: "Available",
-      datePosted: "Added 3 days ago",
-    },
-    {
-      id: 4,
-      image: "https://via.placeholder.com/150",
-      model: "Tesla Model 3 2023",
-      price: "$90/day",
-      availability: "Available",
-      datePosted: "Added 1 day ago",
-    },
-    {
-      id: 5,
-      image: "https://via.placeholder.com/150",
-      model: "BMW X5 2020",
-      price: "$80/day",
-      availability: "Unavailable",
-      datePosted: "Added 7 days ago",
-    },
-    {
-      id: 6,
-      image: "https://via.placeholder.com/150",
-      model: "Audi Q7 2022",
-      price: "$85/day",
-      availability: "Available",
-      datePosted: "Added 4 days ago",
-    },
-  ];
+  // const cars = [
+  //   {
+  //     id: 1,
+  //     image: "https://via.placeholder.com/150",
+  //     model: "Toyota Camry 2023",
+  //     price: "$45/day",
+  //     availability: "Available",
+  //     datePosted: "Added 2 days ago",
+  //   },
+  //   {
+  //     id: 2,
+  //     image: "https://via.placeholder.com/150",
+  //     model: "Honda Accord 2022",
+  //     price: "$50/day",
+  //     availability: "Unavailable",
+  //     datePosted: "Added 5 days ago",
+  //   },
+  //   {
+  //     id: 3,
+  //     image: "https://via.placeholder.com/150",
+  //     model: "Ford Mustang 2021",
+  //     price: "$70/day",
+  //     availability: "Available",
+  //     datePosted: "Added 3 days ago",
+  //   },
+  //   {
+  //     id: 4,
+  //     image: "https://via.placeholder.com/150",
+  //     model: "Tesla Model 3 2023",
+  //     price: "$90/day",
+  //     availability: "Available",
+  //     datePosted: "Added 1 day ago",
+  //   },
+  //   {
+  //     id: 5,
+  //     image: "https://via.placeholder.com/150",
+  //     model: "BMW X5 2020",
+  //     price: "$80/day",
+  //     availability: "Unavailable",
+  //     datePosted: "Added 7 days ago",
+  //   },
+  //   {
+  //     id: 6,
+  //     image: "https://via.placeholder.com/150",
+  //     model: "Audi Q7 2022",
+  //     price: "$85/day",
+  //     availability: "Available",
+  //     datePosted: "Added 4 days ago",
+  //   },
+  // ];
+
+  const [cars, setCars] = useState([]);
+
+  fetch("http://localhost:5000/availableCars")
+    .then((res) => res.json())
+    .then((data) => setCars(data));
 
   return (
     <section className="py-10 px-4 w-[90%] md:w-[75%] mx-auto">
@@ -58,7 +64,7 @@ const RecentListings = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {cars.map((car) => (
           <div
-            key={car.id}
+            key={car._id}
             className="bg-white shadow-md hover:shadow-lg hover:scale-105 transition transform duration-300 rounded-lg overflow-hidden"
           >
             <img
@@ -78,7 +84,7 @@ const RecentListings = () => {
               >
                 {car.availability}
               </p>
-              <p className="text-gray-400 text-sm">{car.datePosted}</p>
+              <p className="text-gray-400 text-sm">{car.bookingDate}</p>
             </div>
           </div>
         ))}
