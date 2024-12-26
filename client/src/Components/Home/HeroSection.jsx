@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { FaCarSide } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   // Animation variants for the container
@@ -81,7 +82,7 @@ const HeroSection = () => {
             whileHover={{ scale: 1.05, backgroundColor: "#2563eb" }}
             whileTap={{ scale: 0.95 }}
           >
-            Book Now
+            <Link to="/availablecars">View Cars</Link>
           </motion.button>
           <motion.button
             className="bg-transparent border border-white hover:bg-white hover:text-black text-white font-semibold py-3 px-6 rounded-md shadow-lg transition duration-300"
