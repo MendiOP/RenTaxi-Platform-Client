@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../AuthContext/AuthContext";
 import AddcarsModal from "./AddcarsModal";
+// Optional: If using a third-party spinner library
+// import { ClipLoader } from "react-spinners";
 
 const Mycar = () => {
   const [cars, setCars] = useState([]);
@@ -10,13 +12,35 @@ const Mycar = () => {
   const [showModal, setShowModal] = useState(false);
   const [carToUpdate, setCarToUpdate] = useState(null);
 
+  // Added loading and error states
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Define fetchCars outside useEffect to enable retry
+  const fetchCars = async () => {
+    setLoading(true); // Start loading
+    setError(null); // Reset previous errors
+    try {
+      const response = await fetch(
+        `http://localhost:5000/myCar?email=${user.email}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch cars.");
+      }
+      const data = await response.json();
+      setCars(data);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Something went wrong!");
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
+
   useEffect(() => {
-    fetch(`http://localhost:5000/myCar?email=${user.email}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCars(data);
-      })
-      .catch((error) => console.error(error));
+    if (user?.email) {
+      fetchCars();
+    }
   }, [user?.email]);
 
   const handleDelete = (id) => {
@@ -39,6 +63,10 @@ const Mycar = () => {
               Swal.fire("Deleted!", "Your car has been deleted.", "success");
               setCars((prev) => prev.filter((car) => car._id !== id));
             }
+          })
+          .catch((error) => {
+            console.error(error);
+            Swal.fire("Error!", "Failed to delete the car.", "error");
           });
       }
     });
@@ -93,6 +121,10 @@ const Mycar = () => {
     setCars(sortedCars);
   };
 
+  const retryFetch = () => {
+    fetchCars();
+  };
+
   return (
     <div className="max-w-7xl mx-auto bg-white px-4 py-8 mt-10 mb-10">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
@@ -114,21 +146,45 @@ const Mycar = () => {
         </select>
       </div>
 
-      {cars.length === 0 ? (
+      {loading ? (
+        // Loading Spinner and Text
+        <div className="flex flex-col items-center justify-center mt-10">
+          {/* Simple CSS Spinner */}
+          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+          <h3 className="text-xl text-gray-700">Loading your cars...</h3>
+
+          {/* If using react-spinners */}
+          {/* <ClipLoader color="#3498db" size={50} />
+          <h3 className="text-xl text-gray-700 mt-4">Loading your cars...</h3> */}
+        </div>
+      ) : error ? (
+        // Error Message
+        <div className="text-center mt-10">
+          <h3 className="text-xl text-red-500 mb-4">Error: {error}</h3>
+          <button
+            onClick={retryFetch}
+            className="inline-block border border-red-500 px-6 py-2 rounded-2xl text-red-600 text-lg font-bold
+                       hover:bg-red-600 hover:text-white transition duration-300"
+          >
+            Retry
+          </button>
+        </div>
+      ) : cars.length === 0 ? (
+        // No Cars Added
         <div className="text-center mt-10">
           <h3 className="text-xl text-gray-700 mb-4">
             You haven&apos;t added any cars yet!
           </h3>
-          {/* Link to Add Car page */}
           <Link
             to="/addCar"
             className="inline-block border border-red-500 px-6 py-2 rounded-2xl text-red-600 text-lg font-bold
-                         hover:bg-red-600 hover:text-white transition duration-300"
+                       hover:bg-red-600 hover:text-white transition duration-300"
           >
             Add Car
           </Link>
         </div>
       ) : (
+        // Display Cars Table
         <>
           <div className="overflow-x-auto">
             <table className="w-full border border-gray-200 text-center">

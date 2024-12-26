@@ -8,15 +8,22 @@ import {
 } from "chart.js";
 import React, { useContext, useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { FaCalendarAlt, FaRegSadTear, FaTrash } from "react-icons/fa"; // Added icon for no data
+import {
+  FaCalendarAlt,
+  FaRegSadTear,
+  FaSpinner,
+  FaTrash,
+} from "react-icons/fa";
 import { AuthContext } from "../../AuthContext/AuthContext";
 
-// Register Chart.js components
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const Mybookings = () => {
   const [cars, setCars] = useState([]);
   const { user } = useContext(AuthContext);
+
+  // State to manage loading
+  const [isLoading, setIsLoading] = useState(true);
 
   // State to manage the cancellation modal
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
@@ -30,23 +37,25 @@ const Mybookings = () => {
 
   useEffect(() => {
     if (user?.email) {
+      setIsLoading(true);
       fetch(`http://localhost:5000/myBookings?email=${user.email}`)
         .then((res) => res.json())
         .then((data) => {
           setCars(data);
+          setIsLoading(false);
         })
         .catch((error) => {
           console.error("Error fetching bookings:", error);
+          setIsLoading(false);
         });
     }
   }, [user]);
 
-  // Utility function to calculate the number of days between two dates
   const calculateDays = (start, end) => {
     const startDate = new Date(start);
     const endDate = new Date(end);
     const timeDiff = endDate - startDate;
-    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1; // +1 to include both start and end dates
+    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1;
     return daysDiff > 0 ? daysDiff : 1;
   };
 
@@ -109,7 +118,6 @@ const Mybookings = () => {
     setNewEndDate("");
   };
 
-  // Function to handle the date modification after confirmation
   const confirmModify = () => {
     if (!selectedCarIdForModify || !newStartDate || !newEndDate) {
       alert("Please select both start and end dates.");
@@ -122,7 +130,6 @@ const Mybookings = () => {
       return;
     }
 
-    // Prepare the data to be sent to the server
     const updatedBooking = {
       bookingDate: `${newStartDate} to ${newEndDate}`,
     };
@@ -139,7 +146,6 @@ const Mybookings = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.modifiedCount > 0) {
-          // Update the local state with the new dates
           setCars((prevCars) =>
             prevCars.map((car) =>
               car._id === selectedCarIdForModify
@@ -160,10 +166,8 @@ const Mybookings = () => {
 
   // Prepare data for Chart.js
   const prepareChartData = () => {
-    // Extract rental prices from cars
     const rentalPrices = cars.map((car) => car.rent);
 
-    // Define price ranges (you can adjust these as needed)
     const priceRanges = [
       { label: "$0 - $500", min: 0, max: 500 },
       { label: "$501 - $1000", min: 501, max: 1000 },
@@ -218,7 +222,14 @@ const Mybookings = () => {
   return (
     <div className="p-4 flex justify-center">
       <div className="w-full sm:w-11/12 md:w-7/12 lg:w-7/12 mx-auto">
-        {cars.length === 0 ? (
+        {isLoading ? (
+          // Loading Spinner and Text
+          <div className="flex flex-col items-center justify-center mt-20">
+            <FaSpinner className="text-6xl text-gray-400 mb-4 animate-spin" />
+            <p className="text-xl text-gray-600">Loading your bookings...</p>
+          </div>
+        ) : cars.length === 0 ? (
+          // No Bookings Message
           <div className="flex flex-col items-center justify-center mt-20">
             <FaRegSadTear className="text-6xl text-gray-400 mb-4" />
             <p className="text-xl text-gray-600">You have no bookings yet.</p>
