@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../AuthContext/AuthContext";
 
@@ -77,6 +78,10 @@ const Addcars = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Add Car - RenTaxi</title>
+      </Helmet>
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8 space-y-6"

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 
 const AvailableCars = () => {
@@ -76,6 +77,10 @@ const AvailableCars = () => {
 
   return (
     <div className="pt-20 w-[90%] md:w-[70%] mx-auto">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Available Cars - RenTaxi</title>
+      </Helmet>
       {isLoading ? (
         <Loader />
       ) : (

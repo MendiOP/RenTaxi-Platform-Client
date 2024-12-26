@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../AuthContext/AuthContext";
@@ -127,6 +128,10 @@ const Mycar = () => {
 
   return (
     <div className="max-w-7xl mx-auto bg-white px-4 py-8 mt-10 mb-10">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>My Added Cars - RenTaxi</title>
+      </Helmet>
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
         <h2 className="text-3xl font-bold text-red-600">My Cars</h2>
 

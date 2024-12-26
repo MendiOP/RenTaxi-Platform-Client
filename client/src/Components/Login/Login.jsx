@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { Helmet } from "react-helmet";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -73,6 +74,10 @@ const Login = () => {
 
   return (
     <div className="flex min-h-fit justify-center bg-gray-100 px-4 mt-10  mb-10 p-5">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Login- RenTaxi</title>
+      </Helmet>
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-md space-y-6">
         {/* Form Title */}
         <h1 className="text-2xl font-semibold text-gray-700 text-center">

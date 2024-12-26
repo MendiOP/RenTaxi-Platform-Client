@@ -8,6 +8,7 @@ import {
 } from "chart.js";
 import React, { useContext, useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import { Helmet } from "react-helmet";
 import {
   FaCalendarAlt,
   FaRegSadTear,
@@ -229,6 +230,10 @@ const Mybookings = () => {
 
   return (
     <div className="p-4 flex justify-center">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>My Booked Cars - RenTaxi</title>
+      </Helmet>
       <div className="w-full sm:w-11/12 md:w-7/12 lg:w-7/12 mx-auto">
         {isLoading ? (
           // Loading Spinner and Text

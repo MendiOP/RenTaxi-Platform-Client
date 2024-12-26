@@ -1,5 +1,6 @@
 import { updateProfile } from "firebase/auth";
 import React, { useContext, useState } from "react";
+import { Helmet } from "react-helmet";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -77,6 +78,10 @@ const Register = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Register - RenTaxi</title>
+        </Helmet>
         <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
         <p className="ml-4 text-lg font-semibold">
           Registering, please wait...
@@ -87,6 +92,10 @@ const Register = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 dark:bg-faltu">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Register - RenTaxi</title>
+      </Helmet>
       <div className="w-full max-w-md bg-white px-8 py-3 rounded-xl shadow-md space-y-6 dark:bg-teal-600 mx-auto">
         <ToastContainer />
         <h1 className="text-2xl font-semibold text-gray-700 text-center">

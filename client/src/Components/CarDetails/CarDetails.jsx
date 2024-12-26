@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 
 const CarDetails = () => {
@@ -8,7 +9,7 @@ const CarDetails = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/car/${id}`)
+    fetch(`https://car-rental-server-one.vercel.app/car/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setCar(data);
@@ -48,7 +49,7 @@ const CarDetails = () => {
 
   const handleConfirmBooking = () => {
     try {
-      fetch(`http://localhost:5000/book/${car._id}`, {
+      fetch(`https://car-rental-server-one.vercel.app/book/${car._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,6 +80,10 @@ const CarDetails = () => {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Car Details - RenTaxi</title>
+      </Helmet>
       <h1 className="text-3xl font-bold mb-6">{car.model}</h1>
 
       {/* Main content layout */}

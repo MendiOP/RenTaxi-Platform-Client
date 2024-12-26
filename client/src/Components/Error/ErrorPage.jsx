@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 
 const ErrorPage = () => {
@@ -10,6 +11,10 @@ const ErrorPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Oopps...</title>
+      </Helmet>
       <img
         src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif"
         alt="Error GIF"

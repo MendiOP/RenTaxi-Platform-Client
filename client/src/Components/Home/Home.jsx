@@ -1,4 +1,5 @@
 // import React from "react";
+import { Helmet } from "react-helmet";
 import { Outlet, useLocation } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
@@ -15,6 +16,10 @@ const Home = () => {
 
   return (
     <div>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Home - RenTaxi</title>
+      </Helmet>
       <header>
         <Header></Header>
       </header>
