@@ -28,7 +28,7 @@ const HeroSection = () => {
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1493238792000-8113da705763?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')",
+            "url('https://i.postimg.cc/8k2XMzH4/photo-1493238792000-8113da705763.avif')",
         }}
       ></div>
 
@@ -86,7 +86,7 @@ const HeroSection = () => {
             }}
             whileTap={{ scale: 0.95 }}
           >
-            Contact Us
+            <a href="https://mail.google.com/">Contact Us</a>
           </motion.button>
         </motion.div>
       </motion.div>

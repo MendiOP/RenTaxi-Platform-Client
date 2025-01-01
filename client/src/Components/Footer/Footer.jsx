@@ -106,7 +106,7 @@ const Footer = () => {
       </div>
 
       <div className="mt-10 text-center text-gray-500 border-t border-gray-700 pt-4">
-        <p>Copyright © 2017 SoftHopper - All Rights Reserved</p>
+        <p>Copyright © 2024 AZM-Sites - All Rights Reserved</p>
         <div className="flex justify-center space-x-4 mt-2">
           <SocialIcon url="https://facebook.com" />
           <SocialIcon url="https://twitter.com" />
