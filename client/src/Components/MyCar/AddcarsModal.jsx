@@ -48,7 +48,7 @@ const AddcarsModal = ({ onClose, carData, onCarUpdated }) => {
 
     // If we have details._id, then we do update
 
-    fetch(`https://car-rental-server-one.vercel.app/updateCar/${details._id}`, {
+    fetch(`http://localhost:5000/updateCar/${details._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(details),

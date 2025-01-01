@@ -41,14 +41,11 @@ const Addcars = () => {
     setIsSubmitting(true); // Start loading
 
     try {
-      const res = await fetch(
-        "https://car-rental-server-one.vercel.app/addCar",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(details),
-        }
-      );
+      const res = await fetch("http://localhost:5000/addCar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(details),
+      });
 
       const data = await res.json();
 

@@ -33,17 +33,17 @@ const WhyChooseUs = () => {
   return (
     <section className="px-6 py-12 lg:py-16 bg-gray-100">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-darkGray mb-8 font-display">
           Why Choose Us?
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {points.map((point, index) => (
             <div
               key={index}
-              className="flex flex-col items-center text-center bg-white rounded-lg shadow-lg p-6"
+              className="flex flex-col items-center text-center bg-white rounded-xl shadow-custom hover:shadow-xl transition-shadow duration-300 p-6 transform hover:scale-105"
             >
-              <div className="mb-4">{point.icon}</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              <div className="mb-4 text-tealLight">{point.icon}</div>
+              <h3 className="text-xl font-semibold text-darkGray mb-2">
                 {point.title}
               </h3>
               <p className="text-gray-600">{point.description}</p>

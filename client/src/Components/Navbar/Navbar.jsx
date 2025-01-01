@@ -10,24 +10,24 @@ const Navbar = () => {
 
   const getNavLinkClasses = ({ isActive }) =>
     isActive
-      ? "text-red-600 font-bold border-b-2 border-red-600"
-      : "text-black hover:text-red-600";
+      ? "text-[#20515d] font-bold border-b-2 border-[#2f7585]"
+      : "text-[#292929] hover:text-[#2f7585]";
 
   const handleSignOut = () => {
     signOutUser();
   };
 
   return (
-    <header className="bg-gradient-to-r from-white via-red-50 to-white py-5 shadow-md">
+    <header className="bg-white py-5 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         {/* Left: Brand Logo and Name */}
         <div className="flex items-center">
           <img src={taxi} alt="Taxi Cab Logo" className="h-12 w-12 mr-2" />
-          <h1 className="text-3xl font-extrabold text-red-600">RenTaxi</h1>
+          <h1 className="text-3xl font-extrabold text-[#20515d]">RenTaxi</h1>
         </div>
 
         {/* Center: Horizontal Menu (shown on large screens) */}
-        <nav className="hidden lg:flex space-x-8 items-center font-bold text-lg">
+        <nav className="hidden lg:flex space-x-8 items-center font-semibold text-base">
           <NavLink to="/" className={getNavLinkClasses}>
             Home
           </NavLink>
@@ -65,11 +65,11 @@ const Navbar = () => {
               <img
                 src={user?.photoURL || demouser}
                 alt="User Avatar"
-                className="w-10 h-10 rounded-full border-2 border-red-600 object-cover"
+                className="w-10 h-10 rounded-full border-2 border-[#2f7585] object-cover"
               />
               <button
                 onClick={handleSignOut}
-                className="text-red-600 hover:text-red-800 font-semibold"
+                className="text-[#20515d] hover:text-[#2f7585] font-semibold"
               >
                 Log Out
               </button>
@@ -79,7 +79,7 @@ const Navbar = () => {
 
         {/* Mobile menu button */}
         <button
-          className="lg:hidden flex items-center text-black focus:outline-none"
+          className="lg:hidden flex items-center text-[#292929] focus:outline-none"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <svg
@@ -151,14 +151,14 @@ const Navbar = () => {
               <li>
                 <button
                   onClick={handleSignOut}
-                  className="flex items-center space-x-2"
+                  className="flex items-center space-x-2 text-[#20515d] hover:text-[#2f7585]"
                 >
                   <img
                     src={user?.photoURL || demouser}
                     alt="User Avatar"
-                    className="w-8 h-8 rounded-full border-2 border-red-600 object-cover"
+                    className="w-8 h-8 rounded-full border-2 border-[#2f7585] object-cover"
                   />
-                  <span className="text-red-600 font-semibold">Log Out</span>
+                  <span className="font-semibold">Log Out</span>
                 </button>
               </li>
             )}

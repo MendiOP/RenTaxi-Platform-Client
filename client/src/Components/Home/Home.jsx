@@ -5,6 +5,7 @@ import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import Banner from "./Banner";
 import HeroSection from "./HeroSection";
+import MarqueeComponent from "./MarqueeComponent";
 import RecentListings from "./RecentListings";
 import SpecialOffers from "./SpecialOffers";
 import WhyChooseUs from "./WhyChooseUs";
@@ -15,7 +16,7 @@ const Home = () => {
   let isHomePath = location.pathname === "/";
 
   return (
-    <div>
+    <div className="font-body">
       <Helmet>
         <meta charSet="utf-8" />
         <title>Home - RenTaxi</title>
@@ -29,6 +30,7 @@ const Home = () => {
           <>
             <Banner></Banner>
             <WhyChooseUs></WhyChooseUs>
+            <MarqueeComponent></MarqueeComponent>
             <RecentListings></RecentListings>
             <SpecialOffers></SpecialOffers>
             <HeroSection></HeroSection>
