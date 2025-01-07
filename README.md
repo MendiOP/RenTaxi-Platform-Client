@@ -8,7 +8,6 @@ The **Car Booking Application** is a web-based platform designed to simplify the
 
 [**View Live Demo**](https://rentaxi-pain.netlify.app/)
 
-_Replace the above link with your actual live URL._
 
 ## Key Features
 
