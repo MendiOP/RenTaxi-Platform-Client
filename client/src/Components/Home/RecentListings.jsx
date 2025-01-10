@@ -8,7 +8,7 @@ const RecentListings = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/availableCars")
+    fetch("https://car-rental-server-one.vercel.app/availableCars")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");

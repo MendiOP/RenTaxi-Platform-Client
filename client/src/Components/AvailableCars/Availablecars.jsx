@@ -12,7 +12,9 @@ const AvailableCars = () => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const res = await fetch("http://localhost:5000/availableCars");
+        const res = await fetch(
+          "https://car-rental-server-one.vercel.app/availableCars"
+        );
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
