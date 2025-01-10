@@ -21,7 +21,7 @@ const Home = () => {
         <meta charSet="utf-8" />
         <title>Home - RenTaxi</title>
       </Helmet>
-      <header>
+      <header className="sticky top-0 z-50">
         <Header></Header>
       </header>
 
